@@ -1,0 +1,143 @@
+@host = http://localhost:8080
+@ckey = [client ckey]
+@recipient = +7XXXXXXXXXX
+@callerid = 
+
+##### VOICE #####
+
+###
+POST {{host}}/api/voice/status?ckey={{ckey}}
+Content-Type: application/json
+
+[90122]
+
+###
+POST {{host}}/api/voice/push/text?ckey={{ckey}}
+Content-Type: application/json
+
+[
+    {
+        "recipient": "{{recipient}}",
+        "message_id": 90122,
+        "text": "test"
+    }
+]
+
+### USE TINKOFF SPEECH KIT
+POST {{host}}/api/voice/push/text_v2?ckey={{ckey}}
+Content-Type: application/json
+
+[
+    {
+        "recipient": "{{recipient}}",
+        "message_id": 90122,
+        "text": "test"
+    }
+]
+
+###
+POST {{host}}/api/voice/push/file?ckey={{ckey}}
+Content-Type: application/json
+
+[
+    {
+        "recipient": "{{recipient}}",
+        "message_id": 90122,
+        "caller": "{{callerid}}",
+        "file_id": "5d9c471c05a4de001c5c5967"
+    }
+]
+###
+
+GET {{host}}/api/voice/channel?ckey={{ckey}}
+
+##### SMS #####
+
+###
+POST {{host}}/api/push?ckey={{ckey}}
+Content-Type: application/json
+
+[
+    {
+        "recipient": "{{recipient}}",
+        "message_id": "90122",
+        "text": "Test sms"
+    }
+]
+
+###
+POST {{host}}/api/status?ckey={{ckey}}
+Content-Type: application/json
+
+[90122]
+
+###
+POST {{host}}/api/voice/duration
+Content-Type: application/json
+
+{"text":""}
+
+###
+@url = {{host}}/api/voice/synthesize?ckey={{ckey}}&text=123
+GET {{url}}
+Content-Type: application/octet-stream
+
+
+### USE TINKOFF SPEECH KIT
+GET {{host}}/api/voice/synthesize_v2?ckey={{ckey}}&text=123
+Content-Type: application/octet-stream
+
+
+###
+GET {{host}}:8089/registry/{{recipient}}?ckey={{ckey}}
+Content-Type: application/json;
+
+###
+
+
+### SIP CHANNEL BALANCER TEST
+
+@sipBalancerUrl = http://localhost:8088
+###
+GET {{sipBalancerUrl}}/channel/take/+7XXXXXXXXXX/1
+
+###
+
+GET {{sipBalancerUrl}}/channel/give/1
+
+###
+
+GET {{sipBalancerUrl}}/channels/reload
+
+
+###
+GET {{sipBalancerUrl}}/channels/idle
+
+###
+GET {{sipBalancerUrl}}/channels/busy
+
+### Callpassword task create
+POST {{host}}/api/voice/task?ckey={{ckey}}
+Content-Type: application/json
+
+{
+    "from": "+7XXXXXXXXXX",
+    "to": "+7XXXXXXXXXX",
+    "expired": 60
+}
+
+###
+
+### Callpassword task resolve
+POST {{host}}/api/voice/task/resolve/+7XXXXXXXXXX/+7XXXXXXXXXX
+Content-Type: application/json;
+###
+
+
+### Get trunk
+GET {{host}}/api/trunks/654f713f23674b001267c969/callers?ckey={{ckey}}
+Content-Type: application/json;
+
+
+### Get trunk random caller
+GET {{host}}/api/trunks/654f713f23674b001267c969/callers/random?ckey={{ckey}}

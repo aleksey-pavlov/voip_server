@@ -1,0 +1,60 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+      - 8081:8081
+      - 8089:8089
+      - 8088:8088
+    volumes:
+      # Update this to wherever you want VS Code to mount the folder of your project
+      - ..:/workspace
+      # This lets you avoid setting up Git again in the container
+      - ~/.gitconfig:/root/.gitconfig
+    command: sleep infinity
+    environment:
+      - SERVER_ENV=devcontainer
+
+  rabbitmq:
+    image: rabbitmq:3.7-management
+    ports:
+      - 15672:15672
+      - 5672:5672
+
+  redis:
+    image: redis
+
+  mongo:
+    image: mongo:3.4
+    volumes:
+      - mongodb:/data/db
+    ports:
+      - 27017:27017
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - 9090:8081
+
+  mysql:
+    image: percona:5.7
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+  fluentd:
+    image: fluentd
+    volumes:
+      - ./fluent.conf:/fluentd/etc/fluent.conf
+    ports:
+      - 9292:9292
+
+volumes:
+  mysql:
+  mongodb:

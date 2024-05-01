@@ -1,0 +1,23 @@
+// See https://aka.ms/vscode-remote/devcontainer.json for format details.
+{
+	"name": "Node.js",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "app",
+	
+	// Uncomment the next line if you want to publish any ports.
+	// "appPort": [8080,8081],
+
+	// Uncomment the next line if you want to add in default container specific settings.json values
+	// "settings":  { "workbench.colorTheme": "Quiet Light" },
+
+	// Uncomment the next line to run commands after the container is created.
+	"postCreateCommand": "npm install && npm run build && npm run setup",
+	
+	"workspaceFolder": "/workspace",
+
+	"extensions": [
+		"dbaeumer.vscode-eslint",
+		"leizongmin.node-module-intellisense",
+		"humao.rest-client"
+	]
+}

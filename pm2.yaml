@@ -1,0 +1,50 @@
+apps: 
+    - script : ./build/Server.js
+      name: Server
+      max_restarts: 7
+      
+    - script: ./build/Provider.js
+      name: Provider
+      max_restarts: 7
+
+    - script: ./build/Stat.js
+      name: Stat
+      node_args: --max_old_space_size=4096
+      max_restarts: 7
+
+    - script : ./build/AdminServer.js
+      name: Admin
+      max_restarts: 7
+      
+    - script: ./build/AdminAgent.js
+      name: Agent
+      max_restarts: 7
+    
+    - script: ./build/GatewayEventListener.js
+      name: GatewayEventListener
+      max_restarts: 7
+
+    - script: ./build/TrunkProvider.js
+      name: TrunkProvider
+      max_restarts: 7
+
+    - script: ./build/Trunk.js
+      name: Trunk
+      max_restarts: 7
+      node_args:
+        - "max-old-space-size=4096"
+
+    - script: ./build/RegistryProvider.js
+      name: RegistryProvider
+      max_restarts: 7
+
+    - script: ./build/AsteriskAssetsManager.js
+      name: AsteriskAssetsManager
+      max_restarts: 7
+
+    - script: ./build/SipBalancer.js
+      name: SipBalancer
+      args:
+        - 8088
+        - "./sipchannels.csv"
+      max_restarts: 7

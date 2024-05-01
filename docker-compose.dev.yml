@@ -1,0 +1,45 @@
+version: '3'
+services:
+  rabbitmq:
+    image: rabbitmq:3.7-management
+    ports:
+      - 15672:15672
+      - 5672:5672
+
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+
+  mongo:
+    image: mongo:3.4
+    volumes:
+      - mongodb:/data/db
+    ports:
+      - 27017:27017
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - 9090:8081
+
+  mysql:
+    image: percona:5.7
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+  fluentd:
+    image: fluentd
+    volumes:
+      - ./.devcontainer/fluent.conf:/fluentd/etc/fluent.conf
+    ports:
+      - 9292:9292
+      - 24224:24224
+
+volumes:
+  mysql:
+  mongodb:
